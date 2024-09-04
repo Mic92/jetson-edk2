@@ -28,7 +28,6 @@ let
       "RISCV64"
     else
       throw "Unsupported architecture";
-  CROSS_COMPILER_PREFIX = "${pkgs.stdenv.cc}/bin/${pkgs.stdenv.cc.targetPrefix}";
 in
 pkgs.mkShell rec {
   depsBuildBuild = [
@@ -36,14 +35,13 @@ pkgs.mkShell rec {
     buildPackages.bash
   ];
   depsHostHost = [ pkgs.libuuid ];
-  inherit CROSS_COMPILER_PREFIX;
-  ${"GCC5_${targetArch}_PREFIX"} = CROSS_COMPILER_PREFIX;
   strictDeps = true;
   NUGET_PATH = pkgs.lib.getExe buildPackages.nuget;
   nativeBuildInputs = [
     buildPackages.libuuid
     buildPackages.dtc
     buildPackages.acpica-tools
+    buildPackages.gnat
     python
     # FIXME: needs cross fix
     #pkgs.buildPackages.lcov
